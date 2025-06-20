@@ -664,6 +664,7 @@ void SinglePhaseBase::implicitStepSetup( real64 const & GEOS_UNUSED_PARAM( time_
       porousSolid.saveConvergedState();
 
       saveConvergedState( subRegion ); // necessary for a meaningful porosity update in sequential schemes
+      updateFractureAperture( subRegion ); // LILIANE: in FlowSolverBase, up in hierarchy
       updatePorosityAndPermeability( subRegion );
       updateFluidState( subRegion );
 

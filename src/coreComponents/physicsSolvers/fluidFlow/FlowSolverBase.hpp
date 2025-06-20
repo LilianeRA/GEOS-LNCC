@@ -107,6 +107,8 @@ public:
 
   void updatePorosityAndPermeability( CellElementSubRegion & subRegion ) const;
 
+  void updateFractureAperture( SurfaceElementSubRegion & subRegion ) const; // LILIANE
+
   virtual void updatePorosityAndPermeability( SurfaceElementSubRegion & subRegion ) const;
 
   /**
