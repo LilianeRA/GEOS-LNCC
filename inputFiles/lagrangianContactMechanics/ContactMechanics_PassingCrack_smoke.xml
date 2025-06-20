@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+
+<Problem>
+  <Included>
+    <File
+      name="./PassingCrack_smoke.xml"/>
+  </Included>
+
+  <Solvers
+    gravityVector="{ 0.0, 0.0, 0.0 }">
+    <SolidMechanicsLagrangeContact
+      name="lagrangiancontact"
+      stabilizationName="TPFAstabilization"
+      logLevel="1"
+      timeIntegrationOption="QuasiStatic"
+      discretization="FE1"
+      targetRegions="{ Region, Fracture }">
+      <NonlinearSolverParameters
+        newtonTol="1.0e-6"
+        logLevel="2"
+        newtonMaxIter="10"
+        lineSearchAction="Require"
+        lineSearchMaxCuts="2"/>
+      <LinearSolverParameters
+        directParallel="0"/>
+    </SolidMechanicsLagrangeContact>
+  </Solvers>
+ 
+  <NumericalMethods>
+    <FiniteVolume>
+      <TwoPointFluxApproximation
+        name="TPFAstabilization"/>
+    </FiniteVolume>
+  </NumericalMethods>
+
+  <Events
+    maxTime="1.0">
+    <SoloEvent
+      name="preFracture"
+      target="/Solvers/SurfaceGen"/>
+
+    <PeriodicEvent
+      name="restarts"
+      timeFrequency="1.0"
+      targetExactTimestep="0"
+      target="/Outputs/restartOutput"/>
+
+    <PeriodicEvent
+      name="outputs"
+      timeFrequency="1"
+      targetExactTimestep="0"
+      target="/Outputs/vtkOutput"/>
+
+    <PeriodicEvent
+      name="solverApplications"
+      beginTime="0.0"
+      endTime="1.0"
+      forceDt="1.0"
+      target="/Solvers/lagrangiancontact"/>
+  </Events>
+</Problem>

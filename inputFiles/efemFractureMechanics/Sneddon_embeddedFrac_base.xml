@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+
+<Problem>
+  <NumericalMethods>
+    <FiniteElements>
+      <FiniteElementSpace
+        name="FE1"
+        order="1"/>
+    </FiniteElements>
+  </NumericalMethods>
+
+  <!-- SPHINX_SNEDDON_REGIONS-->
+  <ElementRegions>
+    <CellElementRegion
+      name="Domain"
+      cellBlocks="{ * }"
+      materialList="{ rock }"/>
+
+    <SurfaceElementRegion
+      name="Fracture"
+      faceBlock="embeddedSurfaceSubRegion"
+      subRegionType="embeddedElement"
+      materialList="{ frictionLaw }"
+      defaultAperture="1e-3"/>
+  </ElementRegions>
+  <!-- SPHINX_SNEDDON_REGIONS_END -->
+  
+
+  <!-- SPHINX_SNEDDON_MATERIAL-->
+  <Constitutive>
+    <ElasticIsotropic
+      name="rock"
+      defaultDensity="2700"
+      defaultBulkModulus="16.66666666666666e9"
+      defaultShearModulus="1.0e10"/>
+
+    <FrictionlessContact
+      name="frictionLaw"/>
+  </Constitutive>
+  <!-- SPHINX_SNEDDON_MATERIAL_END-->
+
+  <!-- SPHINX_SNEDDON_BC -->
+  <FieldSpecifications>
+    <FieldSpecification
+      name="xnegconstraint"
+      objectPath="nodeManager"
+      fieldName="totalDisplacement"
+      component="0"
+      scale="0.0"
+      setNames="{ xneg, xpos }"/>
+
+    <FieldSpecification
+      name="yposconstraint"
+      objectPath="nodeManager"
+      fieldName="totalDisplacement"
+      component="1"
+      scale="0.0"
+      setNames="{ yneg, ypos }"/>
+
+    <FieldSpecification
+      name="zconstraint"
+      objectPath="nodeManager"
+      fieldName="totalDisplacement"
+      component="2"
+      scale="0.0"
+      setNames="{ zneg, zpos }"/>
+      
+    <FieldSpecification
+      name="Traction"
+      setNames="{ all }"
+      objectPath="ElementRegions/Fracture"
+      fieldName="traction"
+      component="0"
+      scale="-2.0e6"/>      
+  </FieldSpecifications>
+  <!-- SPHINX_SNEDDON_BC_END -->
+
+  <Functions>
+    <TableFunction
+      name="apertureTable"
+      coordinates="{ -1.0e-3, 0.0 }"
+      values="{ 1.0e-6, 1.0e-4 }"/>
+  </Functions>
+  
+  <!-- SPHINX_SNEDDON_TASK -->
+  <Tasks>
+    <PackCollection
+      name="displacementJumpCollection"
+      objectPath="ElementRegions/Fracture/embeddedSurfaceSubRegion"
+      fieldName="displacementJump"
+      setNames="{all}"/>
+  </Tasks>
+  <!-- SPHINX_SNEDDON_TASK_END -->
+
+  <Outputs>
+    <VTK
+      name="vtkOutput"
+      plotLevel="2"
+      format="binary"
+      plotFileRoot="sneddon_embFrac"/>
+      
+    <TimeHistory
+      name="timeHistoryOutput"
+      sources="{/Tasks/displacementJumpCollection}"
+      filename="displacementJump_embeddedFrac" />
+      
+     <Restart
+      name="restartOutput"/> 
+  </Outputs>
+</Problem>
