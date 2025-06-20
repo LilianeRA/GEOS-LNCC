@@ -1,0 +1,4 @@
+destructor
+transverse
+residual
+residuals
