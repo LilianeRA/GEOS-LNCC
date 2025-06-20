@@ -24,5 +24,4 @@ spack-*.txt
 __pycache__
 
 # ignore all folders except the template one
-/src/externalComponents/*
 !/src/externalComponents/newComponentTemplate/
