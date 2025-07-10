@@ -675,6 +675,10 @@
 					<xsd:selector xpath="CompressibleSolidParallelPlatesPermeability" />
 					<xsd:field xpath="@name" />
 				</xsd:unique>
+				<xsd:unique name="domainConstitutiveCompressibleSolidParallelPlatesPermeabilityBBUniqueName">
+					<xsd:selector xpath="CompressibleSolidParallelPlatesPermeabilityBB" />
+					<xsd:field xpath="@name" />
+				</xsd:unique>
 				<xsd:unique name="domainConstitutiveCompressibleSolidPressurePermeabilityUniqueName">
 					<xsd:selector xpath="CompressibleSolidPressurePermeability" />
 					<xsd:field xpath="@name" />
@@ -785,6 +789,10 @@
 				</xsd:unique>
 				<xsd:unique name="domainConstitutiveParallelPlatesPermeabilityUniqueName">
 					<xsd:selector xpath="ParallelPlatesPermeability" />
+					<xsd:field xpath="@name" />
+				</xsd:unique>
+				<xsd:unique name="domainConstitutiveParallelPlatesPermeabilityBBUniqueName">
+					<xsd:selector xpath="ParallelPlatesPermeabilityBB" />
 					<xsd:field xpath="@name" />
 				</xsd:unique>
 				<xsd:unique name="domainConstitutiveParticleFluidUniqueName">
@@ -5446,6 +5454,7 @@ Information output from lower logLevels is added with the desired log level
 			<xsd:element name="CompressibleSolidConstantPermeability" type="CompressibleSolidConstantPermeabilityType" />
 			<xsd:element name="CompressibleSolidExponentialDecayPermeability" type="CompressibleSolidExponentialDecayPermeabilityType" />
 			<xsd:element name="CompressibleSolidParallelPlatesPermeability" type="CompressibleSolidParallelPlatesPermeabilityType" />
+			<xsd:element name="CompressibleSolidParallelPlatesPermeabilityBB" type="CompressibleSolidParallelPlatesPermeabilityBBType" />
 			<xsd:element name="CompressibleSolidPressurePermeability" type="CompressibleSolidPressurePermeabilityType" />
 			<xsd:element name="CompressibleSolidSlipDependentPermeability" type="CompressibleSolidSlipDependentPermeabilityType" />
 			<xsd:element name="CompressibleSolidWillisRichardsPermeability" type="CompressibleSolidWillisRichardsPermeabilityType" />
@@ -5474,6 +5483,7 @@ Information output from lower logLevels is added with the desired log level
 			<xsd:element name="MultiPhaseVolumeWeightedThermalConductivity" type="MultiPhaseVolumeWeightedThermalConductivityType" />
 			<xsd:element name="NullModel" type="NullModelType" />
 			<xsd:element name="ParallelPlatesPermeability" type="ParallelPlatesPermeabilityType" />
+			<xsd:element name="ParallelPlatesPermeabilityBB" type="ParallelPlatesPermeabilityBBType" />
 			<xsd:element name="ParticleFluid" type="ParticleFluidType" />
 			<xsd:element name="PerfectlyPlastic" type="PerfectlyPlasticType" />
 			<xsd:element name="PorousDamageElasticIsotropic" type="PorousDamageElasticIsotropicType" />
@@ -6034,6 +6044,18 @@ Information output from lower logLevels is added with the desired log level
 		<!--name => A name is required for any non-unique nodes-->
 		<xsd:attribute name="name" type="groupName" use="required" />
 	</xsd:complexType>
+	<xsd:complexType name="CompressibleSolidParallelPlatesPermeabilityBBType">
+		<!--permeabilityModelName => Name of the permeability model.-->
+		<xsd:attribute name="permeabilityModelName" type="groupNameRef" use="required" />
+		<!--porosityModelName => Name of the porosity model.-->
+		<xsd:attribute name="porosityModelName" type="groupNameRef" use="required" />
+		<!--solidInternalEnergyModelName => Name of the solid internal energy model.-->
+		<xsd:attribute name="solidInternalEnergyModelName" type="groupNameRef" default="" />
+		<!--solidModelName => Name of the solid model.-->
+		<xsd:attribute name="solidModelName" type="groupNameRef" use="required" />
+		<!--name => A name is required for any non-unique nodes-->
+		<xsd:attribute name="name" type="groupName" use="required" />
+	</xsd:complexType>
 	<xsd:complexType name="CompressibleSolidPressurePermeabilityType">
 		<!--permeabilityModelName => Name of the permeability model.-->
 		<xsd:attribute name="permeabilityModelName" type="groupNameRef" use="required" />
@@ -6543,6 +6565,12 @@ If you want to do a three-phase simulation, please use instead wettingIntermedia
 		<xsd:attribute name="name" type="groupName" use="required" />
 	</xsd:complexType>
 	<xsd:complexType name="ParallelPlatesPermeabilityType">
+		<!--transversalPermeability => Default value of the permeability normal to the surface. If not specified the permeability is updated using the cubic law. -->
+		<xsd:attribute name="transversalPermeability" type="real64" default="-1" />
+		<!--name => A name is required for any non-unique nodes-->
+		<xsd:attribute name="name" type="groupName" use="required" />
+	</xsd:complexType>
+	<xsd:complexType name="ParallelPlatesPermeabilityBBType">
 		<!--transversalPermeability => Default value of the permeability normal to the surface. If not specified the permeability is updated using the cubic law. -->
 		<xsd:attribute name="transversalPermeability" type="real64" default="-1" />
 		<!--name => A name is required for any non-unique nodes-->

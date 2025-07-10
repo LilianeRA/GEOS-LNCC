@@ -657,6 +657,7 @@ void FlowSolverBase::updateFractureAperture( SurfaceElementSubRegion & subRegion
   // sigma é a tensão efetiva na pressão dada; varia de acordo com a trajetória edométrica que assumimos aqui
 
   real64 sumAperture = 0.0;
+  real64 sumSigmaN = 0.0;
   forAll< parallelDevicePolicy<> >( subRegion.size(), [&] GEOS_DEVICE ( localIndex const k )
   {
     //for( localIndex q = 0; q < porousWrapper.numGauss(); ++q )
@@ -680,22 +681,22 @@ void FlowSolverBase::updateFractureAperture( SurfaceElementSubRegion & subRegion
       newHydraulicAperture[k] = Vm - gn_BB;
 
       sumAperture += newHydraulicAperture[k];
-
+	    sumSigmaN += sigmaN_N;
       
-      GEOS_LOG_RANK_0( "*** "<< k <<" pressure "<< pressure[k] << " newHydraulicAperture "<< newHydraulicAperture[k]<< " sigmaN_N "<< sigmaN_N );
+      GEOS_LOG_RANK_0( "*** "<< k << std::setprecision(6) << std::scientific <<" pressure "<< pressure[k] << " newHydraulicAperture "<< newHydraulicAperture[k]<< " sigmaN_N "<< sigmaN_N );
     }
-
   } );                      
 
   //No final do loop de cada fratura, calcular a média da abertura e atribuir à abertura de cada elemento daquela fratura
   real64 const averageAperture = sumAperture / subRegion.size();
+  real64 const averageSigmaN = sumSigmaN / subRegion.size();
   forAll< parallelDevicePolicy<> >( subRegion.size(), [&newHydraulicAperture, averageAperture] GEOS_DEVICE ( localIndex const k )
   {
     newHydraulicAperture[k] = averageAperture;
   } ); 
 
-  GEOS_LOG_RANK_0( "*** averageAperture "<< averageAperture );
-}
+  GEOS_LOG_RANK_0( std::setprecision(6) << std::scientific <<"*** averageAperture "<< averageAperture << " averageSigmaN "<< averageSigmaN );
+ }
 
 
 void FlowSolverBase::updatePorosityAndPermeability( SurfaceElementSubRegion & subRegion ) const

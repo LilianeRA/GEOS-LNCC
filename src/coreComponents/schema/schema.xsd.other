@@ -1367,6 +1367,7 @@
 			<xsd:element name="CompressibleSolidConstantPermeability" type="CompressibleSolidConstantPermeabilityType" />
 			<xsd:element name="CompressibleSolidExponentialDecayPermeability" type="CompressibleSolidExponentialDecayPermeabilityType" />
 			<xsd:element name="CompressibleSolidParallelPlatesPermeability" type="CompressibleSolidParallelPlatesPermeabilityType" />
+			<xsd:element name="CompressibleSolidParallelPlatesPermeabilityBB" type="CompressibleSolidParallelPlatesPermeabilityBBType" />
 			<xsd:element name="CompressibleSolidPressurePermeability" type="CompressibleSolidPressurePermeabilityType" />
 			<xsd:element name="CompressibleSolidSlipDependentPermeability" type="CompressibleSolidSlipDependentPermeabilityType" />
 			<xsd:element name="CompressibleSolidWillisRichardsPermeability" type="CompressibleSolidWillisRichardsPermeabilityType" />
@@ -1395,6 +1396,7 @@
 			<xsd:element name="MultiPhaseVolumeWeightedThermalConductivity" type="MultiPhaseVolumeWeightedThermalConductivityType" />
 			<xsd:element name="NullModel" type="NullModelType" />
 			<xsd:element name="ParallelPlatesPermeability" type="ParallelPlatesPermeabilityType" />
+			<xsd:element name="ParallelPlatesPermeabilityBB" type="ParallelPlatesPermeabilityBBType" />
 			<xsd:element name="ParticleFluid" type="ParticleFluidType" />
 			<xsd:element name="PerfectlyPlastic" type="PerfectlyPlasticType" />
 			<xsd:element name="PorousDamageElasticIsotropic" type="PorousDamageElasticIsotropicType" />
@@ -2075,6 +2077,7 @@
 	<xsd:complexType name="CompressibleSolidConstantPermeabilityType" />
 	<xsd:complexType name="CompressibleSolidExponentialDecayPermeabilityType" />
 	<xsd:complexType name="CompressibleSolidParallelPlatesPermeabilityType" />
+	<xsd:complexType name="CompressibleSolidParallelPlatesPermeabilityBBType" />
 	<xsd:complexType name="CompressibleSolidPressurePermeabilityType" />
 	<xsd:complexType name="CompressibleSolidSlipDependentPermeabilityType" />
 	<xsd:complexType name="CompressibleSolidWillisRichardsPermeabilityType" />
@@ -2490,6 +2493,14 @@
 	</xsd:complexType>
 	<xsd:complexType name="NullModelType" />
 	<xsd:complexType name="ParallelPlatesPermeabilityType">
+		<!--dPerm_dDispJump => Derivative of rock permeability with respect to displacement jump-->
+		<xsd:attribute name="dPerm_dDispJump" type="real64_array4d" />
+		<!--dPerm_dPressure => Derivative of rock permeability with respect to pressure-->
+		<xsd:attribute name="dPerm_dPressure" type="real64_array3d" />
+		<!--permeability => Rock permeability-->
+		<xsd:attribute name="permeability" type="real64_array3d" />
+	</xsd:complexType>
+	<xsd:complexType name="ParallelPlatesPermeabilityBBType">
 		<!--dPerm_dDispJump => Derivative of rock permeability with respect to displacement jump-->
 		<xsd:attribute name="dPerm_dDispJump" type="real64_array4d" />
 		<!--dPerm_dPressure => Derivative of rock permeability with respect to pressure-->
