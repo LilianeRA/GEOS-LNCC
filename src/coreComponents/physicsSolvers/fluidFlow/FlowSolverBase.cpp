@@ -616,7 +616,7 @@ void FlowSolverBase::updateFractureAperture( SurfaceElementSubRegion & subRegion
 {
   GEOS_MARK_FUNCTION;
 
-  auto dot_product = [](real64 const (&u)[3], real64 const (&v)[3] ) -> real64
+  /*auto dot_product = [](real64 const (&u)[3], real64 const (&v)[3] ) -> real64
   {
     return u[0]*v[0] + u[1]*v[1] + u[2]*v[2];
   };
@@ -625,10 +625,17 @@ void FlowSolverBase::updateFractureAperture( SurfaceElementSubRegion & subRegion
     r[0] = u[0]*v[0];
     r[1] = u[1]*v[1];
     r[2] = u[2]*v[2];
-  };
+  };*/
 
   arrayView1d< real64 const > const & pressure = subRegion.getField< fields::flow::pressure >();
-  arrayView1d< real64 > newHydraulicAperture = subRegion.getField< fields::flow::hydraulicAperture >();
+  if (pressure.size() > 0)
+  {
+    forAll< parallelDevicePolicy<> >( subRegion.size(), [&] GEOS_DEVICE ( localIndex const k )
+    {
+      GEOS_LOG_RANK_0( "*** "<< k << std::setprecision(6) << std::scientific <<" pressure "<< pressure[k]);
+    } );
+  }
+  /*arrayView1d< real64 > newHydraulicAperture = subRegion.getField< fields::flow::hydraulicAperture >();
   auto normalVector = subRegion.getField< fields::normalVector >();
   // Estamos considerando que o estado de referência é o estado in-situ (reservatório)
 
@@ -696,7 +703,8 @@ void FlowSolverBase::updateFractureAperture( SurfaceElementSubRegion & subRegion
   } ); 
 
   GEOS_LOG_RANK_0( std::setprecision(6) << std::scientific <<"*** averageAperture "<< averageAperture << " averageSigmaN "<< averageSigmaN );
- }
+  */
+}
 
 
 void FlowSolverBase::updatePorosityAndPermeability( SurfaceElementSubRegion & subRegion ) const
