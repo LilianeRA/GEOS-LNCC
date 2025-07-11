@@ -753,7 +753,7 @@ void FlowSolverBase::updateFractureAperture( SurfaceElementSubRegion & subRegion
 
   // d0 é a abertura da fratura no estado in-situ
   real64 const d0 = 1.e-3; 
-  GEOS_LOG_RANK_0( "d0 "<< k << std::setprecision(6) << std::scientific << d0);
+  GEOS_LOG_RANK_0( "d0 "<< std::setprecision(6) << std::scientific << d0);
   
   
   // Cálculos a serem feitos para calcular a abertura da fratura para uma dada pressão 
