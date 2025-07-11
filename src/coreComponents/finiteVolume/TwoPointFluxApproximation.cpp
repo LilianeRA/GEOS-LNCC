@@ -592,6 +592,8 @@ void TwoPointFluxApproximation::addFractureMatrixConnectionsEDFM( MeshLevel & me
       stencilCellsSubRegionIndex[1] = 0;
       stencilCellsIndex[1] = kes;
       stencilWeights[1] = 4. * faceArea[kes] / hydraulicAperture[fractureRegionIndex][0][kes];
+      
+      GEOS_LOG_RANK_0( "+++ "<< std::setprecision(6) << std::scientific <<" hydraulicAperture "<< hydraulicAperture[fractureRegionIndex][0][kes] << " fractureRegionIndex " << fractureRegionIndex << " kes " << kes);
 
       edfmStencil.add( 2,
                        stencilCellsRegionIndex.data(),
@@ -678,7 +680,7 @@ void TwoPointFluxApproximation::addFractureFractureConnectionsEDFM( MeshLevel & 
         stencilCellsIndex[kes]          = fractureElementIndex;
 
         stencilWeights[kes] = hydraulicAperture[fractureRegionIndex][0][fractureElementIndex] * edgeLength / LvArray::tensorOps::l2Norm< 3 >( cellCenterToEdgeCenter );
-
+        GEOS_LOG_RANK_0( "+++ "<< std::setprecision(6) << std::scientific <<" hydraulicAperture "<< hydraulicAperture[fractureRegionIndex][0][fractureElementIndex] << " fractureRegionIndex " << fractureRegionIndex );
         LvArray::tensorOps::copy< 3 >( stencilCellCenterToEdgeCenters[kes], cellCenterToEdgeCenter );
       }
 

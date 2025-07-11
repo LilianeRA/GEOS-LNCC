@@ -102,6 +102,9 @@ public:
    */
   virtual ~BartonBandis() override;
 
+  static string catalogName() { return "BartonBandis"; }
+
+  virtual string getCatalogName() const override { return catalogName(); }
 
   /// Type of kernel wrapper for in-kernel update
   using KernelWrapper = BartonBandisUpdates;
